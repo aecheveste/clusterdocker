@@ -55,38 +55,3 @@ echo "deb http://packages.azlux.fr/debian/ buster main" | sudo tee /etc/apt/sour
 wget -qO - https://azlux.fr/repo.gpg.key | sudo apt-key add -
 sudo apt update
 sudo apt install docker-ctop
-
-echo '=============================================='
-echo '=== PASO 8: CREAR DIRECTORIOS DE VOLUMENES ==='
-echo '=============================================='
-sudo mkdir -p /volumes/www/
-sudo mkdir -p /volumes/nginx/certs
-sudo mkdir -p /volumes/nginx/vhostd
-sudo mkdir -p /volumes/nginx/config
-sudo mkdir -p /volumes/nginx/html
-cd /volumes/www
-
-echo '=================================================='
-echo '=== PASO 9: CLONAR RESPOSITORIOS DE SITIOS WEB ==='
-echo '=================================================='
-sudo git clone https://github.com/StartBootstrap/startbootstrap-sb-admin-2.git
-sudo git clone https://github.com/Flicomastic/powerjgym.git
-sudo git clone https://github.com/microsoft/project-html-website.git
-
-sudo mv powerjgym portal
-sudo mv startbootstrap-sb-admin-2 erp
-sudo mv project-html-website factura
-
-echo '================================================'
-echo '=== PASO 10: CLONAR REPOSITORIO CONTENEDORES ==='
-echo '================================================'
-cd /volumes
-
-sudo git clone https://github.com/aecheveste/deploys-mrsi.git
-sudo mv deploys-mrsi deploy
-sudo cp deploy/nginx/settings.conf /volumes/nginx/config
-
-echo '================================'
-echo '=== PASO 11: REALIZAR DEPLOY ==='
-echo '================================'
-docker-compose -f deploy/docker-compose.yml up -d

@@ -8,17 +8,21 @@ provider "aws" {
 
 }
 #levanta una instancia en aws ubuntu 20.04
-resource "aws_instance" "reverse-proxy" {
+resource "aws_instance" "docker-Swarm" {
   instance_type = "t2.micro"
+  count         =3
   ami           = "ami-0960ab670c8bb45f3"
+  tags = { 
+   "Name" = "Node-$ {count.index}"
+  }
   #nombre de la llave que de descargo de aws
   key_name  = "MRSI"
   user_data = filebase64("${path.module}/script/docker.sh")
-  vpc_security_group_ids = [aws_security_group.WEB_SG.id]
+  vpc_security_group_ids = [aws_security_group.dockerWEB_SG.id]
 
 }
-resource "aws_security_group" "WEB_SG" {
-  name = "sg_reglas_firewall"
+resource "aws_security_group" "dockerWEB_SG" {
+  name = "sg_reglas_firewall_docker_swarm"
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
     description = "SG HTTP"
@@ -51,5 +55,5 @@ resource "aws_security_group" "WEB_SG" {
   }
   
   output "public_ip" {
-  value = "${join(",", aws_instance.reverse-proxy.*.public_ip)}"
+  value = "${join(",", aws_instance.docker-Swarm.*.public_ip)}"
 }
