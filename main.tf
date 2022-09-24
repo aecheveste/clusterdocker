@@ -45,6 +45,20 @@ resource "aws_security_group" "dockerWEB_SG" {
     to_port     = 22
     protocol    = "tcp"
   }
+    ingress {
+    cidr_blocks = ["172.31.37.106/32","172.31.34.200/32","172.31.44.154/32"]
+    description = "SG docker swarm "
+    from_port   = 2377
+    to_port     = 2377
+    protocol    = "tcp"
+  }
+    ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "SG HTTP visualizer"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+  }
   egress {                                  #Reglas de firewall de salida
     cidr_blocks = ["0.0.0.0/0"]             #Se aplicará a todas las direcciones
     description = "SG All Traffic Outbound" #Descripción
