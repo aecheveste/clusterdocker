@@ -13,7 +13,7 @@ resource "aws_instance" "docker-Swarm" {
   count         =3
   ami           = "ami-0960ab670c8bb45f3"
   tags = { 
-   "Name" = "Node-$ {count.index}"
+   "Name" = "Node-${count.index}"
   }
   #nombre de la llave que de descargo de aws
   key_name  = "MRSI"
